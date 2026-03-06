@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FreeWise Cyber Noir Preview</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="hero card">
+        <h1>FreeWise — Cyber Noir Edition</h1>
+        <p>Splitwise replacement with reminders, OCR simulation, payments, offline sync, currency tools, and exports.</p>
+      </header>
+
+      <section class="card tabs" aria-label="Tabs">
+        <button class="tab is-active" data-tab="dashboard">Dashboard</button>
+        <button class="tab" data-tab="expenses">Expenses</button>
+        <button class="tab" data-tab="settle">Settle</button>
+        <button class="tab" data-tab="insights">Insights</button>
+      </section>
+
+      <section id="dashboard" class="panel card"></section>
+      <section id="expenses" class="panel card hidden"></section>
+      <section id="settle" class="panel card hidden"></section>
+      <section id="insights" class="panel card hidden"></section>
+
+      <section class="card">
+        <h2>Add Expense (with multi-currency)</h2>
+        <form id="expense-form" class="grid-form">
+          <label>Title<input name="title" required placeholder="Noodle Bar" /></label>
+          <label>Amount<input name="amount" type="number" step="0.01" min="0" required /></label>
+          <label>Currency
+            <select name="currency">
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="GBP">GBP</option>
+              <option value="INR">INR</option>
+              <option value="JPY">JPY</option>
+            </select>
+          </label>
+          <label>Paid by<select name="paidBy"></select></label>
+          <label>Split between<select name="splitBetween" multiple></select></label>
+          <label>Category
+            <select name="category">
+              <option>FOOD</option><option>TRANSPORT</option><option>RENT</option>
+              <option>UTILITIES</option><option>ENTERTAINMENT</option><option selected>OTHER</option>
+            </select>
+          </label>
+          <label>Note<input name="note" placeholder="Optional note" /></label>
+          <label>Recurring every N days<input name="recurringDays" type="number" min="0" /></label>
+          <button type="submit" class="primary">Add expense</button>
+        </form>
+      </section>
+
+      <section class="card feature-grid">
+        <article>
+          <h3>OCR Receipt Scan (simulated)</h3>
+          <p class="small">Upload a receipt image and auto-fill sample values.</p>
+          <input type="file" id="receipt-upload" accept="image/*" />
+          <button id="ocr-fill" class="secondary">Scan receipt</button>
+        </article>
+        <article>
+          <h3>Reminder with Snooze</h3>
+          <p class="small">Remind one member about payment and snooze by 1 day.</p>
+          <div class="inline-controls">
+            <select id="reminder-person"></select>
+            <button id="create-reminder" class="secondary">Create reminder</button>
+          </div>
+          <div id="reminder-list"></div>
+        </article>
+      </section>
+
+      <section class="card feature-grid">
+        <article>
+          <h3>Offline-first sync</h3>
+          <p class="small">LocalStorage auto-save + import/export JSON for conflict-safe merge.</p>
+          <div class="inline-controls">
+            <button id="export-json" class="secondary">Export JSON</button>
+            <input type="file" id="import-json" accept="application/json" />
+          </div>
+          <p id="sync-status" class="small"></p>
+        </article>
+        <article>
+          <h3>Transparency exports</h3>
+          <p class="small">Share via CSV or PDF print-friendly report.</p>
+          <div class="inline-controls">
+            <button id="export-csv" class="secondary">Export CSV</button>
+            <button id="export-pdf" class="secondary">Export PDF</button>
+          </div>
+        </article>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
