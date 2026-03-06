@@ -1,44 +1,43 @@
-# FreeWise (Android APK-First)
+# FreeWise (Android APK-First + Localhost Web Preview)
 
-FreeWise is a **free Splitwise-style expense sharing app** focused on Android first (APK distribution), with clean architecture to expand to iOS later.
+FreeWise is a **free Splitwise-style expense sharing app** focused on Android first (APK distribution), with a quick localhost web preview for testing without Android Studio Iguana+.
 
-## What this MVP includes
+## What this repo includes
 
-- Android app scaffold using Kotlin + Jetpack Compose.
-- Group expense tracking.
-- Per-member balance calculation.
-- Debt simplification (minimal transactions to settle).
-- Categories, recurring expense marker, and notes.
-- “Insights” tab with quick metrics and roadmap extras.
+### 1) Android app (primary target)
+- Kotlin + Jetpack Compose scaffold.
+- Group expense tracking, balances, and debt simplification.
+- Categories, notes, and recurring-expense metadata.
 
-## Why this can replace Splitwise over time
+### 2) Web preview (quick local testing)
+- Plain HTML/CSS/JS app in `web_preview/`.
+- Mirrors core flows: dashboard, expenses, settle, insights, and add-expense form.
+- Runs on any local static server.
 
-This version already covers the core flow:
-1. Create shared group context.
-2. Add and view expenses.
-3. See who owes whom.
-4. Settle using simplified transfers.
+## Run the localhost web preview
 
-## Planned user-friendly upgrades
+From the repo root:
 
-- OCR receipt scan from camera.
-- UPI/Paytm/GPay deep-link settlement buttons.
-- Smart reminders with snooze windows.
-- Offline-first mode with conflict-safe sync.
-- Multi-currency and travel trip splitting.
-- Export to CSV/PDF for transparency.
+```bash
+python -m http.server 8080
+```
 
-## Run locally
+Then open:
+
+- `http://localhost:8080/web_preview/`
+
+## Run Android app locally
 
 1. Open in Android Studio Iguana+.
 2. Sync Gradle.
 3. Run `app` on emulator/device.
 4. Build APK from **Build > Build Bundle(s) / APK(s) > Build APK(s)**.
 
-## Testing
+## Planned user-friendly upgrades
 
-Run unit tests with:
-
-```bash
-./gradlew test
-```
+- OCR receipt scan from camera.
+- Payment deep-link settlement buttons.
+- Smart reminders with snooze windows.
+- Offline-first mode with conflict-safe sync.
+- Multi-currency and travel trip splitting.
+- Export to CSV/PDF for transparency.

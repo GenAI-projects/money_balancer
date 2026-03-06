@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FreeWise Web Preview</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header>
+        <h1>FreeWise Web Preview</h1>
+        <p>Splitwise-style expense sharing, testable on localhost.</p>
+      </header>
+
+      <section class="card tabs" aria-label="Tabs">
+        <button class="tab is-active" data-tab="dashboard">Dashboard</button>
+        <button class="tab" data-tab="expenses">Expenses</button>
+        <button class="tab" data-tab="settle">Settle</button>
+        <button class="tab" data-tab="insights">Insights</button>
+      </section>
+
+      <section id="dashboard" class="panel card"></section>
+      <section id="expenses" class="panel card hidden"></section>
+      <section id="settle" class="panel card hidden"></section>
+      <section id="insights" class="panel card hidden"></section>
+
+      <section class="card">
+        <h2>Add Expense (Quick Test)</h2>
+        <form id="expense-form" class="grid-form">
+          <label>
+            Title
+            <input name="title" required placeholder="Dinner" />
+          </label>
+          <label>
+            Amount
+            <input name="amount" type="number" step="0.01" min="0" required placeholder="25" />
+          </label>
+          <label>
+            Paid by
+            <select name="paidBy"></select>
+          </label>
+          <label>
+            Split between
+            <select name="splitBetween" multiple></select>
+          </label>
+          <label>
+            Category
+            <select name="category">
+              <option>FOOD</option>
+              <option>TRANSPORT</option>
+              <option>RENT</option>
+              <option>UTILITIES</option>
+              <option>ENTERTAINMENT</option>
+              <option selected>OTHER</option>
+            </select>
+          </label>
+          <label>
+            Note
+            <input name="note" placeholder="Optional note" />
+          </label>
+          <label>
+            Recurs every N days
+            <input name="recurringDays" type="number" min="0" placeholder="30" />
+          </label>
+          <button type="submit" class="primary">Add expense</button>
+        </form>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
