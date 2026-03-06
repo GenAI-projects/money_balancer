@@ -1,18 +1,33 @@
 package com.freewise.data
 
+import com.freewise.model.CurrencyCode
 import com.freewise.model.Group
 import com.freewise.model.Person
 import com.freewise.model.Settlement
 import kotlin.math.abs
 
 object BalanceCalculator {
+    private val ratesToUsd = mapOf(
+        CurrencyCode.USD to 1.0,
+        CurrencyCode.EUR to 1.08,
+        CurrencyCode.GBP to 1.27,
+        CurrencyCode.INR to 0.012,
+        CurrencyCode.JPY to 0.0067
+    )
+
+    private fun normalizeToBase(amount: Double, from: CurrencyCode, base: CurrencyCode): Double {
+        val inUsd = amount * ratesToUsd.getValue(from)
+        return inUsd / ratesToUsd.getValue(base)
+    }
+
     fun calculateBalances(group: Group): Map<Person, Double> {
         val balances = group.members.associateWith { 0.0 }.toMutableMap()
 
         group.expenses.forEach { expense ->
-            val splitAmount = expense.amount / expense.splitBetween.size
+            val normalized = normalizeToBase(expense.amount, expense.currency, group.baseCurrency)
+            val splitAmount = normalized / expense.splitBetween.size
 
-            balances[expense.paidBy] = balances.getValue(expense.paidBy) + expense.amount
+            balances[expense.paidBy] = balances.getValue(expense.paidBy) + normalized
             expense.splitBetween.forEach { member ->
                 balances[member] = balances.getValue(member) - splitAmount
             }
@@ -48,7 +63,10 @@ object BalanceCalculator {
             settlements += Settlement(
                 from = debtor,
                 to = creditor,
-                amount = (transfer * 100).toInt() / 100.0
+                amount = (transfer * 100).toInt() / 100.0,
+                currency = group.baseCurrency,
+                upiLink = "upi://pay?pa=${creditor.upiId ?: "freewise@upi"}&pn=${creditor.name}&am=${"%.2f".format(transfer)}&cu=${group.baseCurrency}",
+                paypalLink = "https://paypal.me/${creditor.paypalHandle ?: creditor.name}/${"%.2f".format(transfer)}"
             )
 
             val remainingDebt = owes - transfer

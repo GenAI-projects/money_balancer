@@ -1,26 +1,23 @@
-# FreeWise Web Preview
+# FreeWise Web Preview (Cyber Noir)
 
-This folder is a browser-testable version of FreeWise for quick localhost validation.
+Browser-testable localhost app with Splitwise-equivalent core + advanced features.
 
 ## Requirements
-
-- Python 3 (or any static file server)
-- A modern browser
+- Python 3
+- Modern browser
 
 ## Start
-
 ```bash
 python -m http.server 8080
 ```
+Open: `http://localhost:8080/web_preview/`
 
-Open:
-
-- http://localhost:8080/web_preview/
-
-## Feature parity with Android MVP
-
-- Dashboard with per-member balances.
-- Expenses list with categories, notes, recurring marker.
-- Simplified settlement suggestions.
-- Insights metrics.
-- Add Expense form (updates balances and settlements instantly).
+## Included features
+- Dashboard balances + debt simplification.
+- Add expense with multi-currency trip support.
+- OCR receipt scan simulation to prefill form data.
+- Settlement payment deep-links (UPI + PayPal).
+- Reminders with 1-day snooze.
+- Offline-first LocalStorage autosync + JSON import/export conflict-safe merge.
+- CSV export + print-to-PDF export.
+- Blade Runner-inspired neon cyber-noir UI theme.

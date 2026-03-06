@@ -1,43 +1,28 @@
 # FreeWise (Android APK-First + Localhost Web Preview)
 
-FreeWise is a **free Splitwise-style expense sharing app** focused on Android first (APK distribution), with a quick localhost web preview for testing without Android Studio Iguana+.
+FreeWise is a free Splitwise-style app focused on Android APK delivery, with a fully testable localhost web app.
 
-## What this repo includes
+## Live features now integrated
 
-### 1) Android app (primary target)
-- Kotlin + Jetpack Compose scaffold.
-- Group expense tracking, balances, and debt simplification.
-- Categories, notes, and recurring-expense metadata.
+- OCR receipt scan flow (web simulation + Android receipt metadata).
+- Payment deep-link settlement actions (UPI + PayPal links).
+- Smart reminders with snooze.
+- Offline-first behavior (web LocalStorage + JSON import/export merge by latest update).
+- Multi-currency trip splitting with normalization to a base currency.
+- Export transparency tools (CSV + print-to-PDF on localhost web).
+- Blade Runner-inspired cyber-noir color scheme across interfaces.
 
-### 2) Web preview (quick local testing)
-- Plain HTML/CSS/JS app in `web_preview/`.
-- Mirrors core flows: dashboard, expenses, settle, insights, and add-expense form.
-- Runs on any local static server.
-
-## Run the localhost web preview
-
-From the repo root:
+## Localhost test (recommended)
 
 ```bash
 python -m http.server 8080
 ```
 
-Then open:
+Open: `http://localhost:8080/web_preview/`
 
-- `http://localhost:8080/web_preview/`
-
-## Run Android app locally
+## Android
 
 1. Open in Android Studio Iguana+.
 2. Sync Gradle.
-3. Run `app` on emulator/device.
-4. Build APK from **Build > Build Bundle(s) / APK(s) > Build APK(s)**.
-
-## Planned user-friendly upgrades
-
-- OCR receipt scan from camera.
-- Payment deep-link settlement buttons.
-- Smart reminders with snooze windows.
-- Offline-first mode with conflict-safe sync.
-- Multi-currency and travel trip splitting.
-- Export to CSV/PDF for transparency.
+3. Run app on emulator/device.
+4. Build APK via **Build > Build Bundle(s) / APK(s) > Build APK(s)**.

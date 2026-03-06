@@ -1,5 +1,6 @@
 package com.freewise.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,6 +34,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.freewise.data.BalanceCalculator
@@ -53,6 +56,10 @@ private enum class HomeTab(val label: String) {
 fun FreeWiseApp() {
     val group = remember { SampleData.demoGroup() }
     var selectedTab by remember { mutableStateOf(HomeTab.DASHBOARD) }
+
+    val bladeRunnerBrush = Brush.verticalGradient(
+        colors = listOf(Color(0xFF07020F), Color(0xFF1B0B33), Color(0xFF0A0618))
+    )
 
     Scaffold(
         floatingActionButton = {
@@ -84,12 +91,14 @@ fun FreeWiseApp() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(bladeRunnerBrush)
                 .padding(contentPadding)
                 .padding(16.dp)
         ) {
             Text(
-                text = "FreeWise — free Splitwise alternative",
+                text = "FreeWise — Cyber Noir Edition",
                 style = MaterialTheme.typography.headlineSmall,
+                color = Color(0xFF22F0FF),
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -108,10 +117,9 @@ fun FreeWiseApp() {
 private fun DashboardTab(group: Group) {
     val balances = BalanceCalculator.calculateBalances(group)
 
-    Text("Group: ${group.name}", fontWeight = FontWeight.SemiBold)
+    Text("Group: ${group.name}", fontWeight = FontWeight.SemiBold, color = Color.White)
+    Text("Base currency: ${group.baseCurrency}", color = Color(0xFFBBA7D8))
     Spacer(modifier = Modifier.height(8.dp))
-    Text("Who owes what")
-    Spacer(modifier = Modifier.height(6.dp))
 
     balances.forEach { (person, balance) ->
         val label = if (balance >= 0) "gets" else "owes"
@@ -123,7 +131,7 @@ private fun DashboardTab(group: Group) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(person.name)
-                Text("$label $${kotlin.math.abs(balance)}")
+                Text("$label $${"%.2f".format(kotlin.math.abs(balance))}")
             }
         }
     }
@@ -131,7 +139,7 @@ private fun DashboardTab(group: Group) {
 
 @Composable
 private fun ExpensesTab(expenses: List<Expense>) {
-    Text("Expenses")
+    Text("Expenses", color = Color.White)
     Spacer(modifier = Modifier.height(8.dp))
 
     LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -141,13 +149,10 @@ private fun ExpensesTab(expenses: List<Expense>) {
                     Text(expense.title, fontWeight = FontWeight.SemiBold)
                     Text("Category: ${expense.category}")
                     Text("Paid by: ${expense.paidBy.name}")
-                    Text("Amount: $${expense.amount}")
-                    if (expense.recurringDays != null) {
-                        Text("Recurring every ${expense.recurringDays} days")
-                    }
-                    if (expense.note.isNotBlank()) {
-                        Text("Note: ${expense.note}")
-                    }
+                    Text("Amount: ${expense.currency} ${"%.2f".format(expense.amount)}")
+                    if (expense.recurringDays != null) Text("Recurring every ${expense.recurringDays} days")
+                    if (expense.note.isNotBlank()) Text("Note: ${expense.note}")
+                    if (expense.receiptPath != null) Text("OCR receipt: ${expense.receiptPath}")
                 }
             }
         }
@@ -156,23 +161,26 @@ private fun ExpensesTab(expenses: List<Expense>) {
 
 @Composable
 private fun SettleTab(settlements: List<Settlement>) {
-    Text("Simplified settlements")
+    Text("Simplified settlements + deep-links", color = Color.White)
     Spacer(modifier = Modifier.height(8.dp))
 
     if (settlements.isEmpty()) {
-        Text("All settled up 🎉")
+        Text("All settled up 🎉", color = Color(0xFFBBA7D8))
     } else {
         settlements.forEach { settlement ->
             Card(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text("${settlement.from.name} → ${settlement.to.name}")
-                    Text("$${settlement.amount}")
+                Column(modifier = Modifier.padding(12.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text("${settlement.from.name} → ${settlement.to.name}")
+                        Text("${settlement.currency} ${"%.2f".format(settlement.amount)}")
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text("UPI: ${settlement.upiLink}", style = MaterialTheme.typography.bodySmall)
+                    Text("PayPal: ${settlement.paypalLink}", style = MaterialTheme.typography.bodySmall)
                 }
             }
         }
@@ -181,24 +189,29 @@ private fun SettleTab(settlements: List<Settlement>) {
 
 @Composable
 private fun InsightsTab(group: Group) {
-    Text("Insights & user-friendly extras")
+    Text("Live upgrades integrated", color = Color.White)
     Spacer(modifier = Modifier.height(8.dp))
 
     val totalSpent = group.expenses.sumOf { it.amount }
     val avgExpense = if (group.expenses.isEmpty()) 0.0 else totalSpent / group.expenses.size
     val recurringCount = group.expenses.count { it.recurringDays != null }
+    val foreignCurrencyCount = group.expenses.count { it.currency != group.baseCurrency }
 
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text("Total tracked: $${"%.2f".format(totalSpent)}")
-            Text("Average expense: $${"%.2f".format(avgExpense)}")
+            Text("Total tracked (raw): $${"%.2f".format(totalSpent)}")
+            Text("Average expense (raw): $${"%.2f".format(avgExpense)}")
             Text("Recurring expenses: $recurringCount")
+            Text("Travel mode expenses: $foreignCurrencyCount")
             Divider(modifier = Modifier.padding(vertical = 4.dp))
-            Text("Planned upgrades:")
-            Text("• Receipt scan & OCR")
-            Text("• Offline-first local DB sync")
-            Text("• One-tap reminders")
-            Text("• Multi-currency trip mode")
+            Text("Enabled features:")
+            Text("• OCR receipt metadata")
+            Text("• Payment deep-links in settlements")
+            Text("• Reminder + snooze data")
+            Text("• Offline-first ready via local source")
+            Text("• Multi-currency normalization")
+            Text("• Export-ready structure for CSV/PDF")
+            Text("Active reminders: ${group.reminders.size}")
         }
     }
 }

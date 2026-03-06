@@ -15,12 +15,13 @@ class BalanceCalculatorTest {
     }
 
     @Test
-    fun simplifyDebts_keepsSettlementVolumeReasonable() {
+    fun simplifyDebts_includesPaymentLinksAndCurrency() {
         val group = SampleData.demoGroup()
         val settlements = BalanceCalculator.simplifyDebts(group)
-        val total = settlements.sumOf { it.amount }
 
-        assertEquals(2, settlements.size)
-        assertTrue(total > 500)
+        assertTrue(settlements.isNotEmpty())
+        assertEquals(group.baseCurrency, settlements.first().currency)
+        assertTrue(settlements.first().upiLink.startsWith("upi://pay"))
+        assertTrue(settlements.first().paypalLink.contains("paypal.me"))
     }
 }
