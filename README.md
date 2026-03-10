@@ -26,3 +26,24 @@ Open: `http://localhost:8080/web_preview/`
 2. Sync Gradle.
 3. Run app on emulator/device.
 4. Build APK via **Build > Build Bundle(s) / APK(s) > Build APK(s)**.
+
+
+## New scalable backend (FastAPI)
+
+A production-oriented backend is now included under `backend/` using:
+- FastAPI
+- PostgreSQL
+- SQLAlchemy 2.0
+- Pytest-driven test suite
+
+Quick start with Docker:
+
+```bash
+docker compose up --build
+```
+
+Then open:
+- `http://localhost:8000/docs`
+- `http://localhost:8000/health`
+
+See `backend/README.md` for API flow and local development steps.
