@@ -1,6 +1,8 @@
 # FreeWise Backend (FastAPI + PostgreSQL + SQLAlchemy)
 
 ## Stack
+
+If you prefer a very short review path, start with `backend/REVIEW_GUIDE.md`.
 - FastAPI
 - SQLAlchemy 2.0
 - PostgreSQL
